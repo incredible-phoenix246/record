@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model staff {
+  id                  String      @id @default(cuid())
+  staff_id            String      @unique
+  first_name          String
+  last_name           String
+  falculty            String
+  staff_category      String
+  phone_number        String
+  staff_address       String
+  relationship_status String
+  image_url           String
+  ward                Ward[]
+  email               String?     @unique
+  NextOfKin           NextOfKin[]
+}
+
+model Ward {
+  id           Int    @id @default(autoincrement())
+  name         String
+  relationship String
+  staff        staff  @relation(fields: [staff_id], references: [id])
+  staff_id     String
+}
+
+model NextOfKin {
+  id           Int    @id @default(autoincrement())
+  name         String
+  relationship String
+  staff        staff  @relation(fields: [staff_id], references: [id])
+  staff_id     String
+}
